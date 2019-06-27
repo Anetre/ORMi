@@ -1,15 +1,10 @@
 ﻿using ORMi.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Management;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ORMi
 {
-    public class WMIWatcher
+    public class WMIWatcher: IDisposable
     {
         ManagementEventWatcher watcher;
         private string _scope;
@@ -85,6 +80,11 @@ namespace ORMi
 
                 WMIEventArrived(this, new WMIEventArgs { Object = d });
             }
+        }
+
+        public void Dispose()
+        {
+            watcher.Dispose();
         }
     }
 
