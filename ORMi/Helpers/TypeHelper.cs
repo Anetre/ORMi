@@ -68,7 +68,21 @@ namespace ORMi.Helpers
                     propertyName = p.Name;
                 }
 
-                var a = mo.Properties[propertyName].Value;
+                object a;
+                try
+                {
+                    a = mo.Properties[propertyName].Value;
+                }
+                catch (ManagementException me)
+                {
+                    if (me.ErrorCode == ManagementStatus.NotFound) {
+                        throw new Exception($"Could not find property '{propertyName}' in the response", me);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
                 if (a == null)
                 {
